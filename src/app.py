@@ -27,12 +27,9 @@ def convert():
             shutil.rmtree(session_dir)
         os.makedirs(session_dir)
 
-        # TXT beolvasása és linkek tisztítása
         links = file.read().decode('utf-8').splitlines()
         clean_links = [line.strip() for line in links if line.strip() and not line.strip().startswith('#')]
 
-        # yt-dlp beállítások MP3 konverzióval
-      # yt-dlp beállítások MP3 konverzióval és bot-védelem kikerülésével
         ydl_opts = {
             'format': 'bestaudio/best',
             'postprocessors': [{
@@ -50,7 +47,6 @@ def convert():
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download(clean_links)
 
-        # ZIP csomag létrehozása
         zip_path = os.path.join(UPLOAD_FOLDER, 'youtube_mp3s.zip')
         with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for root, dirs, files in os.walk(session_dir):
@@ -59,7 +55,6 @@ def convert():
                         file_path = os.path.join(root, f)
                         zipf.write(file_path, os.path.basename(file_path))
 
-        # Elküldjük a böngészőnek, ami automatikusan letölti a helyi Downloads mappába
         return send_file(zip_path, as_attachment=True, download_name='youtube_mp3s.zip')
 
 if __name__ == '__main__':
