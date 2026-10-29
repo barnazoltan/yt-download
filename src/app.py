@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, send_file, redirect, url_for
 import yt_dlp
 
 app = Flask(__name__)
-UPLOAD_FOLDER = '~/Downloads'
+UPLOAD_FOLDER = '/app/Downloads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/')
